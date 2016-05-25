@@ -9,7 +9,6 @@ repositories {
     maven {
 		url 'http://mvnrepository.com/artifact/com.googlecode.juniversalchardet/juniversalchardet'
 	}
-
 }
 
 javadoc {
@@ -28,6 +27,15 @@ dependencies {
 group = 'jp.natsukishina.csvmapper'
 archivesBaseName = 'CSVMapper'
 version = '0.0.1-SNAPSHOT'
+
+task javadocJar(type: Jar, dependsOn:javadoc) {
+	classifier = 'javadoc'
+	from javadoc.destinationDir
+}
+
+artifacts {
+	archives javadocJar
+}
 
 uploadArchives {
 	repositories {
