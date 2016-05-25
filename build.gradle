@@ -27,7 +27,7 @@ dependencies {
 // settings for maven
 group = 'jp.natsukishina.csvmapper'
 archivesBaseName = 'CSVMapper'
-version = '0.0.1'
+version = '0.0.1-SNAPSHOT'
 
 uploadArchives {
 	repositories {
