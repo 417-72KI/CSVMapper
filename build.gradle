@@ -30,7 +30,7 @@ version = '0.0.1'
 uploadArchives {
 	repositories {
 		mavenDeployer {
-			repository(url: "file:${projectDir}")
+			repository(url: "file:${projectDir}/repos")
 		}
 	}
 }
