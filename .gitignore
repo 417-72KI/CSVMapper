@@ -20,6 +20,7 @@ Thumbs.db
 
 # Gradle
 .gradle
+gradle-app.setting
 !gradle-wrapper.jar
 
 # Maven

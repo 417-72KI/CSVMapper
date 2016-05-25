@@ -23,6 +23,9 @@ import java.util.List;
  */
 public abstract class CSVConverter {
 
+	/**
+	 * 最後に読み込んだCSVの文字コードを格納する
+	 */
 	private static String inputCharCode;
 
 	/**
@@ -60,6 +63,7 @@ public abstract class CSVConverter {
 
 		File file = new File(filePath);
 		{
+			//親フォルダが無い場合はフォルダを作成(再帰的に)
 			File parent = file.getParentFile();
 			if(!parent.exists()) {
 				parent.mkdirs();
