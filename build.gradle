@@ -6,6 +6,10 @@ def defaultEncoding = 'UTF-8'
 
 repositories {
     jcenter()
+    maven {
+		url 'http://mvnrepository.com/artifact/com.googlecode.juniversalchardet/juniversalchardet'
+	}
+
 }
 
 javadoc {
@@ -15,10 +19,9 @@ javadoc {
 
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.12'
-    compile fileTree(dir: 'lib', includes: ['*.jar'])
+	compile 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'
 
     testCompile 'junit:junit:4.12'
-    testCompile fileTree(dir: 'testlib', includes: ['*.jar'])
 }
 
 // settings for maven
