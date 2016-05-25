@@ -38,6 +38,7 @@ public abstract class CSVConverter {
 	 * @param list
 	 *            出力するリスト
 	 * @throws IOException
+	 *             ファイル入出力時のエラー
 	 */
 	public static void output(String filePath, List<? extends CSVConvertable> list) throws IOException {
 		output(filePath, list, inputCharCode == null ? "UTF-8" : inputCharCode);
@@ -54,6 +55,7 @@ public abstract class CSVConverter {
 	 * @param charCode
 	 *            出力文字コード
 	 * @throws IOException
+	 *             ファイル入出力時のエラー
 	 */
 	public static void output(String filePath, List<? extends CSVConvertable> list, String charCode)
 			throws IOException {
@@ -97,14 +99,17 @@ public abstract class CSVConverter {
 	 * CSVファイルを解析し、指定されたクラスのリストに変換する<br>
 	 * 変換には {@link CSVConvertable#importFromCSV(LinkedList)}を使用する
 	 *
+	 * @param <E>
+	 *            CSVConvertableを実装したクラス
 	 * @param filePath
 	 *            CSVファイルのパス
 	 * @param clazz
 	 *            変換するクラス
 	 * @return 指定クラスのインスタンスリスト
 	 * @throws CSVException
+	 *             CSV読み込み時のエラー
 	 */
-	public static <E extends CSVConvertable> List<E> convertFromCSVFile(String filePath, Class<E> clazz) {
+	public static <E extends CSVConvertable> List<E> convertFromCSVFile(String filePath, Class<E> clazz) throws CSVException {
 		try {
 			List<LinkedList<String>> buildList = build(filePath);
 			List<E> convertedList = new ArrayList<>();
@@ -127,9 +132,9 @@ public abstract class CSVConverter {
 	 * @param filePath
 	 *            CSVファイルのパス
 	 * @return 生成されたフィールド配列のリスト
-	 * @throws IOException
-	 * @throws FileNotFoundException
 	 * @throws UnsupportedEncodingException
+	 * @throws FileNotFoundException
+	 * @throws IOException
 	 */
 	private static List<LinkedList<String>> build(String filePath) throws UnsupportedEncodingException, FileNotFoundException, IOException {
 		inputCharCode = FileCharDetecter.detect(filePath);
