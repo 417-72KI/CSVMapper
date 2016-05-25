@@ -114,9 +114,14 @@ public abstract class CSVConverter {
 			List<LinkedList<String>> buildList = build(filePath);
 			List<E> convertedList = new ArrayList<>();
 			for (LinkedList<String> list : buildList) {
-				E element = clazz.newInstance();
-				element.importFromCSV(list);
-				convertedList.add(element);
+				try {
+					E element = clazz.newInstance();
+					element.importFromCSV(list);
+					convertedList.add(element);
+				} catch (RuntimeException e) {
+					System.out.println("skip row: " + list);
+					continue;
+				}
 			}
 			return convertedList;
 		} catch (InstantiationException e) {
