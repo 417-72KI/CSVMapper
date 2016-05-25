@@ -1,0 +1,21 @@
+apply plugin: 'java'
+
+def defaultEncoding = 'UTF-8'
+[compileJava, compileTestJava]*.options*.encoding = defaultEncoding
+
+repositories {
+    jcenter()
+}
+
+javadoc {
+    options.charSet = 'UTF-8'
+    options.encoding = 'UTF-8'
+}
+
+dependencies {
+    compile 'org.slf4j:slf4j-api:1.7.12'
+    compile fileTree(dir: 'lib', includes: ['*.jar'])
+
+    testCompile 'junit:junit:4.12'
+    testCompile fileTree(dir: 'testlib', includes: ['*.jar'])
+}
