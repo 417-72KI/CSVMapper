@@ -21,9 +21,11 @@ dependencies {
     testCompile fileTree(dir: 'testlib', includes: ['*.jar'])
 }
 
+
+// settings for maven
 group = 'jp.natsukishina.csvmapper'
 archivesBaseName = 'CSVMapper'
-version = '0.0.1'		//バージョン
+version = '0.0.1'
 
 uploadArchives {
 	repositories {
