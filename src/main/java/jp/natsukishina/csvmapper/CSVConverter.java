@@ -257,4 +257,32 @@ public abstract class CSVConverter {
 		return inputCharCode;
 	}
 
+	/**
+	 * ファイルがCSVファイルかどうか判定する。<br>
+	 * 判定基準は拡張子が'.csv'となっていること
+	 * @param file ファイル
+	 * @return CSVファイルならtrue
+	 */
+	public static boolean isCSVFile(File file) {
+		String suffix = getSuffix(file.getName());
+		if(suffix == null) {
+			return false;
+		}
+		return suffix.toLowerCase().equals("csv");
+	}
+	
+	/**
+	 * ファイル名から拡張子を返します。
+	 * @param fileName ファイル名
+	 * @return ファイルの拡張子
+	 */
+	private static String getSuffix(String fileName) {
+	    if (fileName == null)
+	        return null;
+	    int point = fileName.lastIndexOf(".");
+	    if (point != -1) {
+	        return fileName.substring(point + 1);
+	    }
+	    return fileName;
+	}
 }
