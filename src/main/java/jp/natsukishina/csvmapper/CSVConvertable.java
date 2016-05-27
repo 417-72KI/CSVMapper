@@ -1,6 +1,6 @@
 package jp.natsukishina.csvmapper;
 
-import java.util.LinkedList;
+import java.util.List;
 
 /**
  * CSVファイルとの相互変換用インターフェース
@@ -30,6 +30,6 @@ public interface CSVConvertable {
 	 *
 	 * @param list インポートされるリスト
 	 */
-	public void importFromCSV(LinkedList<String> list);
+	public void importFromCSV(List<String> list);
 
 }

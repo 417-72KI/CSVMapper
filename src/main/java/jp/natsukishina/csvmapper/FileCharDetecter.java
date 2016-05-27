@@ -1,5 +1,6 @@
 package jp.natsukishina.csvmapper;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -19,21 +20,32 @@ public class FileCharDetecter {
 		return new FileCharDetecter(filePath).detector();
 	}
 
-	private String file;
-	private FileCharDetecter(String file) {
+	/**
+	 * 指定されたファイルの文字コードを判定する
+	 * @param file 判定するファイル
+	 * @return 文字コード
+	 */
+	public static String detect(File file) {
+		return new FileCharDetecter(file).detector();
+	}
+
+	private File file;
+	private FileCharDetecter(String filePath) {
+		this(new File(filePath));
+	}
+
+	private FileCharDetecter(File file) {
 		this.file = file;
 	}
 
 	/**
-	 * 文字コードを判定するメソッド.
+	 * 文字コードを判定するメソッド
 	 *
-	 * @param ファイルパス
 	 * @return 文字コード
 	 */
 	private String detector() {
 		byte[] buf = new byte[4096];
-		String fileName = this.file;
-		try (FileInputStream fis = new FileInputStream(fileName);) {
+		try (FileInputStream fis = new FileInputStream(file);) {
 
 			// 文字コード判定ライブラリの実装
 			UniversalDetector detector = new UniversalDetector(null);
@@ -48,11 +60,11 @@ public class FileCharDetecter {
 
 			// 文字コード判定
 			String encType = detector.getDetectedCharset();
-			if (encType != null) {
-				System.out.println("文字コード = " + encType);
-			} else {
-				System.out.println("文字コードを判定できませんでした");
-			}
+//			if (encType != null) {
+//				System.out.println("文字コード = " + encType);
+//			} else {
+//				System.out.println("文字コードを判定できませんでした");
+//			}
 
 			// 判定の初期化
 			detector.reset();
