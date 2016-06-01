@@ -3,7 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>jp.natsukishina.csvmapper</groupId>
-  <artifactId>CSVMapper</artifactId>
+  <artifactId>csv-mapper</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <inceptionYear>2012</inceptionYear>
   <licenses>
