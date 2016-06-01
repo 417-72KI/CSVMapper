@@ -6,10 +6,7 @@ def defaultEncoding = 'UTF-8'
 
 repositories {
     jcenter()
-    maven {
-		url 'http://mvnrepository.com/artifact/com.googlecode.juniversalchardet/juniversalchardet'
-	}
-}
+ }
 
 javadoc {
     options.charSet = defaultEncoding
