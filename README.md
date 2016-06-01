@@ -11,7 +11,7 @@ repositories {
 ```
 ```maven
 dependencies {
-    compile 'jp.natsukishina.csvmapper:CSVMapper:0.0.1'
+    compile 'jp.natsukishina.csvmapper:csv-mapper:0.0.1'
 }
 ```
 * CSVConvertableの実装クラスを作成する
