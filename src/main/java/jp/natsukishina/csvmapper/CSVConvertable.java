@@ -19,17 +19,17 @@ public interface CSVConvertable {
 	public boolean includeLines();
 
 	/**
-	 * CSVに出力する要素を配列にする
+	 * CSVの1行に出力する要素を配列にする
 	 *
 	 * @return 出力する要素の配列
 	 */
 	public String[] array4exportCSV();
 
 	/**
-	 * CSVを変換したリストからインポートする
+	 * CSVから1行インポートする
 	 *
-	 * @param list インポートされるリスト
+	 * @param row インポートされる行
 	 */
-	public void importFromCSV(List<String> list);
+	public void importFromCSV(List<String> row);
 
 }

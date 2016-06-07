@@ -9,7 +9,7 @@ import org.mozilla.universalchardet.UniversalDetector;
 /**
  * 文字コードを判定するクラス.
  */
-public class FileCharDetecter {
+class FileCharDetecter {
 
 	/**
 	 * 指定されたファイルの文字コードを判定する

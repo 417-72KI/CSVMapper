@@ -36,10 +36,10 @@ public abstract class CSVConverter {
 	 * リスト内の要素を1レコードとしてCSVファイルに出力する<br>
 	 * 出力時の文字コードはUTF-8
 	 *
-	 * @param file - 出力先ファイル
-	 * @param list - 出力するリスト
-	 * @param charCode - 出力文字コード
-	 * @throws CSVException - CSV出力時のエラー
+	 * @param file 出力先ファイル
+	 * @param list 出力するリスト
+	 * @param charCode 出力文字コード
+	 * @throws CSVException CSV出力時のエラー
 	 */
 	public static void output(CSVFile file, List<? extends CSVConvertable> list, String charCode) throws CSVException {
 		if (list == null || list.isEmpty()) {
@@ -87,9 +87,9 @@ public abstract class CSVConverter {
 	 * 出力時の文字コードは最後に読み込んだCSVファイルの文字コード<br>
 	 * (※CSVファイルが一度も読み込まれていない場合はUTF-8)
 	 *
-	 * @param file - 出力先ファイル
-	 * @param list - 出力するリスト
-	 * @throws CSVException - CSV出力時のエラー
+	 * @param file 出力先ファイル
+	 * @param list 出力するリスト
+	 * @throws CSVException CSV出力時のエラー
 	 */
 	public static void output(CSVFile file, List<? extends CSVConvertable> list) throws CSVException {
 		output(file, list, inputCharCode == null ? DEFAULT_CHAR_CODE : inputCharCode);
@@ -99,10 +99,10 @@ public abstract class CSVConverter {
 	 * リスト内の要素を1レコードとしてCSVファイルに出力する<br>
 	 * 出力時の文字コードはUTF-8
 	 *
-	 * @param filePath - 出力先ファイルパス(絶対パス)
-	 * @param list - 出力するリスト
-	 * @param charCode - 出力文字コード
-	 * @throws CSVException - CSV出力時のエラー
+	 * @param filePath 出力先ファイルパス(絶対パス)
+	 * @param list 出力するリスト
+	 * @param charCode 出力文字コード
+	 * @throws CSVException CSV出力時のエラー
 	 */
 	public static void output(String filePath, List<? extends CSVConvertable> list, String charCode)
 			throws CSVException {
@@ -115,8 +115,8 @@ public abstract class CSVConverter {
 	 * 出力時の文字コードは最後に読み込んだCSVファイルの文字コード<br>
 	 * (※CSVファイルが一度も読み込まれていない場合はUTF-8)
 	 *
-	 * @param filePath - 出力先ファイルパス(絶対パス)
-	 * @param list - 出力するリスト
+	 * @param filePath 出力先ファイルパス(絶対パス)
+	 * @param list 出力するリスト
 	 * @throws CSVException CSV出力時のエラー
 	 */
 	public static void output(String filePath, List<? extends CSVConvertable> list) throws CSVException {
@@ -127,9 +127,9 @@ public abstract class CSVConverter {
 	 * CSVファイルを解析し、指定されたクラスのリストに変換する<br>
 	 * 変換には {@link CSVConvertable#importFromCSV(List)}を使用する
 	 *
-	 * @param <E> - CSVConvertableを実装したクラス
-	 * @param filePath - CSVファイルのパス
-	 * @param clazz - 変換するクラス
+	 * @param <E> CSVConvertableを実装したクラス
+	 * @param filePath CSVファイルのパス
+	 * @param clazz 変換するクラス
 	 * @return 指定クラスのインスタンスリスト
 	 * @throws CSVException CSV読み込み時のエラー
 	 */
@@ -141,9 +141,9 @@ public abstract class CSVConverter {
 	 * CSVファイルを解析し、指定されたクラスのリストに変換する<br>
 	 * 変換には {@link CSVConvertable#importFromCSV(List)}を使用する
 	 *
-	 * @param <E> - CSVConvertableを実装したクラス
-	 * @param file - CSVファイル
-	 * @param clazz - 変換するクラス
+	 * @param <E> CSVConvertableを実装したクラス
+	 * @param file CSVファイル
+	 * @param clazz 変換するクラス
 	 * @return 指定クラスのインスタンスリスト
 	 * @throws CSVException CSV読み込み時のエラー
 	 */
@@ -172,7 +172,7 @@ public abstract class CSVConverter {
 	/**
 	 * CSVファイルを解析してフィールド配列のリストを生成する
 	 *
-	 * @param file - CSVファイル
+	 * @param file CSVファイル
 	 * @return 生成されたフィールド配列のリスト
 	 * @throws IOException ファイルの入出力に関するエラー
 	 */
@@ -199,7 +199,7 @@ public abstract class CSVConverter {
 	/**
 	 * BufferedReaderから1レコード分のテキストを取り出す。
 	 *
-	 * @param reader - 行データを取り出すBufferedReader。
+	 * @param reader 行データを取り出すBufferedReader。
 	 * @return 1レコード分のテキスト。
 	 * @throws IOException 入出力エラー
 	 */
@@ -239,8 +239,8 @@ public abstract class CSVConverter {
 	/**
 	 * 1レコード分のテキストを分割してフィールドの配列にする。
 	 *
-	 * @param src - 1レコード分のテキストデータ。
-	 * @param dest - フィールドの配列の出力先。
+	 * @param src 1レコード分のテキストデータ。
+	 * @param dest フィールドの配列の出力先。
 	 */
 	private static void splitRecord(String src, LinkedList<String> dest) {
 		String[] columns = src.split(",", -1);
@@ -294,7 +294,7 @@ public abstract class CSVConverter {
 	/**
 	 * ファイルがCSVファイルかどうか判定する。<br>
 	 * 判定基準は拡張子が'.csv'となっていること
-	 * @param file - ファイル
+	 * @param file ファイル
 	 * @return CSVファイルならtrue
 	 */
 	public static boolean isCSVFile(File file) {
@@ -315,7 +315,7 @@ public abstract class CSVConverter {
 
 	/**
 	 * ファイル名から拡張子を返します。
-	 * @param fileName - ファイル名
+	 * @param fileName ファイル名
 	 * @return ファイルの拡張子
 	 */
 	private static String getSuffix(String fileName) {

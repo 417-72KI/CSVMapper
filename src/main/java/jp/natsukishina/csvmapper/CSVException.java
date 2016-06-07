@@ -3,27 +3,43 @@ package jp.natsukishina.csvmapper;
 /**
  * CSVファイルの変換で発生した例外を扱うクラス
  * @author 417.72KI
- *
+ * @see java.lang.RuntimeException
  */
 public class CSVException extends RuntimeException {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public CSVException() {
+		super();
 	}
 
-	public CSVException(String paramString) {
-		super(paramString);
+	/**
+	 * {@inheritDoc}
+	 */
+	public CSVException(String message) {
+		super(message);
 	}
 
-	public CSVException(Throwable paramThrowable) {
-		super(paramThrowable);
+	/**
+	 * {@inheritDoc}
+	 */
+	public CSVException(Throwable cause) {
+		super(cause);
 	}
 
-	public CSVException(String paramString, Throwable paramThrowable) {
-		super(paramString, paramThrowable);
+	/**
+	 * {@inheritDoc}
+	 */
+	public CSVException(String message, Throwable cause) {
+		super(message, cause);
 	}
 
-	public CSVException(String paramString, Throwable paramThrowable, boolean paramBoolean1, boolean paramBoolean2) {
-		super(paramString, paramThrowable, paramBoolean1, paramBoolean2);
+	/**
+	 * {@inheritDoc}
+	 */
+	public CSVException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+		super(message, cause, enableSuppression, writableStackTrace);
 	}
 
 }
