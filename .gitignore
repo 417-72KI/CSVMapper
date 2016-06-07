@@ -35,5 +35,5 @@ bin
 *.log
 *.swp
 *.bak
-lib
+lib/*
 !aptina-*-*.jar
