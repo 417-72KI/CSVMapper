@@ -3,12 +3,12 @@ package jp.natsukishina.csvmapper;
 import java.util.List;
 
 /**
- * CSVファイルとの相互変換用インターフェース
+ * CSVファイルのマッピング用インターフェース
  *
  * @author 417.72KI
  *
  */
-public interface CSVConvertable {
+public interface CSVMappable {
 
 	/**
 	 * CSVの要素内に改行が入りうるかを確認する

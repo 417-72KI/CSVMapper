@@ -48,52 +48,52 @@ public class CSVConverterTest {
 	public void 正常系_CSVファイルから読み込みCSVファイルへ出力() {
 		CSVFile csvFile = new CSVFile(RESOURCE_DIR, RESOURCE_CSV_FILE);
 		assertThat(csvFile.exists(), is(true));
-		List<TestData> list = CSVConverter.convertFromCSVFile(csvFile, TestData.class);
+		List<TestData> list = CSVMapper.convertFromCSVFile(csvFile, TestData.class);
 		checkList(list);
 		IntStream.range(0, list.size()).forEach(i -> {
 			list.get(i).col1 = "hoge" + (i + 1);
 			list.get(i).col2 = "fuga" + (i + 1);
 		});
 
-		CSVConverter.output(new CSVFile(RESOURCE_DIR, OUTPUT_CSV_FILE), list);
+		CSVMapper.output(new CSVFile(RESOURCE_DIR, OUTPUT_CSV_FILE), list);
 	}
 
 	@Test
 	public void 正常系_ファイルパスを直接指定して読み込みファイルパスを直接指定して出力() {
-		List<TestData> list = CSVConverter.convertFromCSVFile(RESOURCE_DIR + "/" + RESOURCE_CSV_FILE, TestData.class);
+		List<TestData> list = CSVMapper.convertFromCSVFile(RESOURCE_DIR + "/" + RESOURCE_CSV_FILE, TestData.class);
 		checkList(list);
 		IntStream.range(0, list.size()).forEach(i -> {
 			list.get(i).col1 = "hoge" + (i + 1);
 			list.get(i).col2 = "fuga" + (i + 1);
 		});
 
-		CSVConverter.output(RESOURCE_DIR + "/" + OUTPUT_CSV_FILE, list);
+		CSVMapper.output(RESOURCE_DIR + "/" + OUTPUT_CSV_FILE, list);
 	}
 
 	@Test
 	public void 正常系_CSVファイルから読み込みファイルパスを直接指定して出力() {
 		CSVFile csvFile = new CSVFile(RESOURCE_DIR, RESOURCE_CSV_FILE);
 		assertThat(csvFile.exists(), is(true));
-		List<TestData> list = CSVConverter.convertFromCSVFile(csvFile, TestData.class);
+		List<TestData> list = CSVMapper.convertFromCSVFile(csvFile, TestData.class);
 		checkList(list);
 		IntStream.range(0, list.size()).forEach(i -> {
 			list.get(i).col1 = "hoge" + (i + 1);
 			list.get(i).col2 = "fuga" + (i + 1);
 		});
 
-		CSVConverter.output(RESOURCE_DIR + "/" + OUTPUT_CSV_FILE, list);
+		CSVMapper.output(RESOURCE_DIR + "/" + OUTPUT_CSV_FILE, list);
 	}
 
 	@Test
 	public void 正常系_ファイルパスを直接指定して読み込みCSVファイルへ出力() {
-		List<TestData> list = CSVConverter.convertFromCSVFile(RESOURCE_DIR + "/" + RESOURCE_CSV_FILE, TestData.class);
+		List<TestData> list = CSVMapper.convertFromCSVFile(RESOURCE_DIR + "/" + RESOURCE_CSV_FILE, TestData.class);
 		checkList(list);
 		IntStream.range(0, list.size()).forEach(i -> {
 			list.get(i).col1 = "hoge" + (i + 1);
 			list.get(i).col2 = "fuga" + (i + 1);
 		});
 
-		CSVConverter.output(new CSVFile(RESOURCE_DIR, OUTPUT_CSV_FILE), list);
+		CSVMapper.output(new CSVFile(RESOURCE_DIR, OUTPUT_CSV_FILE), list);
 	}
 
 	private void checkList(List<TestData> list) {
@@ -129,81 +129,81 @@ public class CSVConverterTest {
 
 	@Test(expected = CSVException.class)
 	public void 異常系_読み込みで存在しないファイル指定時() {
-		CSVConverter.convertFromCSVFile(new CSVFile(RESOURCE_DIR, RESOURCE_CSV_FILE_NOT_EXISTS), TestData.class);
+		CSVMapper.convertFromCSVFile(new CSVFile(RESOURCE_DIR, RESOURCE_CSV_FILE_NOT_EXISTS), TestData.class);
 	}
 
 	@Test(expected = CSVException.class)
 	public void 異常系_存在しないファイルを直接指定して読み込み時() {
-		CSVConverter.convertFromCSVFile(RESOURCE_DIR + "/" + RESOURCE_CSV_FILE_NOT_EXISTS, TestData.class);
+		CSVMapper.convertFromCSVFile(RESOURCE_DIR + "/" + RESOURCE_CSV_FILE_NOT_EXISTS, TestData.class);
 	}
 
 	@Test(expected = CSVException.class)
 	public void 異常系_CSVでないファイルパスを直接指定して読み込み時() {
-		CSVConverter.convertFromCSVFile(RESOURCE_DIR + "/" + RESOURCE_TXT_FILE, TestData.class);
+		CSVMapper.convertFromCSVFile(RESOURCE_DIR + "/" + RESOURCE_TXT_FILE, TestData.class);
 	}
 
 	@Test(expected = CSVException.class)
 	public void 異常系_ディレクトリ指定して読み込み時() {
-		CSVConverter.convertFromCSVFile(RESOURCE_DIR, TestData.class);
+		CSVMapper.convertFromCSVFile(RESOURCE_DIR, TestData.class);
 	}
 
 	@Test(expected = CSVException.class)
 	public void 異常系_CSVでないファイルへ出力_CSVFile生成時() {
-		List<TestData> list = CSVConverter.convertFromCSVFile(RESOURCE_DIR + "/" + RESOURCE_CSV_FILE, TestData.class);
+		List<TestData> list = CSVMapper.convertFromCSVFile(RESOURCE_DIR + "/" + RESOURCE_CSV_FILE, TestData.class);
 		checkList(list);
 		IntStream.range(0, list.size()).forEach(i -> {
 			list.get(i).col1 = "hoge" + (i + 1);
 			list.get(i).col2 = "fuga" + (i + 1);
 		});
 
-		CSVConverter.output(new CSVFile(RESOURCE_DIR, OUTPUT_TXT_FILE), list);
+		CSVMapper.output(new CSVFile(RESOURCE_DIR, OUTPUT_TXT_FILE), list);
 	}
 
 	@Test(expected = CSVException.class)
 	public void 異常系_ファイルパスを直接指定してCSVでないファイルへ出力() {
-		List<TestData> list = CSVConverter.convertFromCSVFile(RESOURCE_DIR + "/" + RESOURCE_CSV_FILE, TestData.class);
+		List<TestData> list = CSVMapper.convertFromCSVFile(RESOURCE_DIR + "/" + RESOURCE_CSV_FILE, TestData.class);
 		checkList(list);
 		IntStream.range(0, list.size()).forEach(i -> {
 			list.get(i).col1 = "hoge" + (i + 1);
 			list.get(i).col2 = "fuga" + (i + 1);
 		});
 
-		CSVConverter.output(RESOURCE_DIR + "/" + OUTPUT_TXT_FILE, list);
+		CSVMapper.output(RESOURCE_DIR + "/" + OUTPUT_TXT_FILE, list);
 	}
 
 	@Test(expected = CSVException.class)
 	public void 異常系_ディレクトリへ出力_CSVFile生成時() {
-		List<TestData> list = CSVConverter.convertFromCSVFile(RESOURCE_DIR + "/" + RESOURCE_CSV_FILE, TestData.class);
+		List<TestData> list = CSVMapper.convertFromCSVFile(RESOURCE_DIR + "/" + RESOURCE_CSV_FILE, TestData.class);
 		checkList(list);
 		IntStream.range(0, list.size()).forEach(i -> {
 			list.get(i).col1 = "hoge" + (i + 1);
 			list.get(i).col2 = "fuga" + (i + 1);
 		});
 
-		CSVConverter.output(new CSVFile(RESOURCE_DIR), list);
+		CSVMapper.output(new CSVFile(RESOURCE_DIR), list);
 	}
 
 	@Test(expected = CSVException.class)
 	public void 異常系_ファイルパスを直接指定してディレクトリへ出力() {
-		List<TestData> list = CSVConverter.convertFromCSVFile(RESOURCE_DIR + "/" + RESOURCE_CSV_FILE, TestData.class);
+		List<TestData> list = CSVMapper.convertFromCSVFile(RESOURCE_DIR + "/" + RESOURCE_CSV_FILE, TestData.class);
 		checkList(list);
 		IntStream.range(0, list.size()).forEach(i -> {
 			list.get(i).col1 = "hoge" + (i + 1);
 			list.get(i).col2 = "fuga" + (i + 1);
 		});
 
-		CSVConverter.output(RESOURCE_DIR, list);
+		CSVMapper.output(RESOURCE_DIR, list);
 	}
 
 	@Test
 	public void testIsCSVFile() {
 		File csvFile = new File(RESOURCE_DIR, RESOURCE_CSV_FILE);
-		assertThat(CSVConverter.isCSVFile(csvFile), is(true));
+		assertThat(CSVMapper.isCSVFile(csvFile), is(true));
 		File txtFile = new File(RESOURCE_DIR, RESOURCE_TXT_FILE);
-		assertThat(CSVConverter.isCSVFile(txtFile), is(false));
+		assertThat(CSVMapper.isCSVFile(txtFile), is(false));
 	}
 
-	public static class TestData implements CSVConvertable {
+	public static class TestData implements CSVMappable {
 		private String col1;
 		private String col2;
 		private String col3;

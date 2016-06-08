@@ -18,12 +18,12 @@ import java.util.List;
 import jp.natsukishina.csvmapper.file.CSVFile;
 
 /**
- * CSVファイルとの相互変換を扱うクラス<br>
- * 使用する際は{@link CSVConvertable}を実装したクラスが必要
- * @author 417.72KI
+ * CSVファイルのマッピングを行うクラス<br>
+ * 使用する際は{@link CSVMappable}を実装したクラスが必要
  *
+ * @author 417.72KI
  */
-public abstract class CSVConverter {
+public abstract class CSVMapper {
 
 	private static final String DEFAULT_CHAR_CODE = "UTF-8";
 
@@ -41,7 +41,7 @@ public abstract class CSVConverter {
 	 * @param charCode 出力文字コード
 	 * @throws CSVException CSV出力時のエラー
 	 */
-	public static void output(CSVFile file, List<? extends CSVConvertable> list, String charCode) throws CSVException {
+	public static void output(CSVFile file, List<? extends CSVMappable> list, String charCode) throws CSVException {
 		if (list == null || list.isEmpty()) {
 			return;
 		}
@@ -59,7 +59,7 @@ public abstract class CSVConverter {
 
 		try (PrintWriter pw = new PrintWriter(
 				new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), charCode)))) {
-			for (CSVConvertable c : list) {
+			for (CSVMappable c : list) {
 				for (int i = 0; i < c.array4exportCSV().length; i++) {
 					String str = c.array4exportCSV()[i];
 					str = str.replace("\"", "\"\"");
@@ -91,7 +91,7 @@ public abstract class CSVConverter {
 	 * @param list 出力するリスト
 	 * @throws CSVException CSV出力時のエラー
 	 */
-	public static void output(CSVFile file, List<? extends CSVConvertable> list) throws CSVException {
+	public static void output(CSVFile file, List<? extends CSVMappable> list) throws CSVException {
 		output(file, list, inputCharCode == null ? DEFAULT_CHAR_CODE : inputCharCode);
 	}
 
@@ -104,7 +104,7 @@ public abstract class CSVConverter {
 	 * @param charCode 出力文字コード
 	 * @throws CSVException CSV出力時のエラー
 	 */
-	public static void output(String filePath, List<? extends CSVConvertable> list, String charCode)
+	public static void output(String filePath, List<? extends CSVMappable> list, String charCode)
 			throws CSVException {
 		CSVFile file = new CSVFile(filePath);
 		output(file, list, charCode);
@@ -119,13 +119,13 @@ public abstract class CSVConverter {
 	 * @param list 出力するリスト
 	 * @throws CSVException CSV出力時のエラー
 	 */
-	public static void output(String filePath, List<? extends CSVConvertable> list) throws CSVException {
+	public static void output(String filePath, List<? extends CSVMappable> list) throws CSVException {
 		output(filePath, list, inputCharCode == null ? DEFAULT_CHAR_CODE : inputCharCode);
 	}
 
 	/**
 	 * CSVファイルを解析し、指定されたクラスのリストに変換する<br>
-	 * 変換には {@link CSVConvertable#importFromCSV(List)}を使用する
+	 * 変換には {@link CSVMappable#importFromCSV(List)}を使用する
 	 *
 	 * @param <E> CSVConvertableを実装したクラス
 	 * @param filePath CSVファイルのパス
@@ -133,13 +133,14 @@ public abstract class CSVConverter {
 	 * @return 指定クラスのインスタンスリスト
 	 * @throws CSVException CSV読み込み時のエラー
 	 */
-	public static <E extends CSVConvertable> List<E> convertFromCSVFile(String filePath, Class<E> clazz) throws CSVException {
+	public static <E extends CSVMappable> List<E> convertFromCSVFile(String filePath, Class<E> clazz)
+			throws CSVException {
 		return convertFromCSVFile(new CSVFile(filePath), clazz);
 	}
 
 	/**
 	 * CSVファイルを解析し、指定されたクラスのリストに変換する<br>
-	 * 変換には {@link CSVConvertable#importFromCSV(List)}を使用する
+	 * 変換には {@link CSVMappable#importFromCSV(List)}を使用する
 	 *
 	 * @param <E> CSVConvertableを実装したクラス
 	 * @param file CSVファイル
@@ -147,7 +148,7 @@ public abstract class CSVConverter {
 	 * @return 指定クラスのインスタンスリスト
 	 * @throws CSVException CSV読み込み時のエラー
 	 */
-	public static <E extends CSVConvertable> List<E> convertFromCSVFile(CSVFile file, Class<E> clazz) throws CSVException {
+	public static <E extends CSVMappable> List<E> convertFromCSVFile(CSVFile file, Class<E> clazz) throws CSVException {
 		try {
 			List<LinkedList<String>> buildList = build(file);
 			List<E> convertedList = new ArrayList<>();
@@ -178,7 +179,7 @@ public abstract class CSVConverter {
 	 */
 	private static List<LinkedList<String>> build(CSVFile file) throws IOException {
 		inputCharCode = FileCharDetecter.detect(file);
-		if(inputCharCode == null) {
+		if (inputCharCode == null) {
 			inputCharCode = DEFAULT_CHAR_CODE;
 		}
 		try (BufferedReader reader = new BufferedReader(
@@ -298,16 +299,16 @@ public abstract class CSVConverter {
 	 * @return CSVファイルならtrue
 	 */
 	public static boolean isCSVFile(File file) {
-		if(file == null) {
+		if (file == null) {
 			return false;
 		}
 
-		if(file.exists() && !file.isFile()) {
+		if (file.exists() && !file.isFile()) {
 			return false;
 		}
 
 		String suffix = getSuffix(file.getName());
-		if(suffix == null) {
+		if (suffix == null) {
 			return false;
 		}
 		return suffix.toLowerCase().equals("csv");
@@ -319,12 +320,12 @@ public abstract class CSVConverter {
 	 * @return ファイルの拡張子
 	 */
 	private static String getSuffix(String fileName) {
-	    if (fileName == null)
-	        return null;
-	    int point = fileName.lastIndexOf(".");
-	    if (point != -1) {
-	        return fileName.substring(point + 1);
-	    }
-	    return fileName;
+		if (fileName == null)
+			return null;
+		int point = fileName.lastIndexOf(".");
+		if (point != -1) {
+			return fileName.substring(point + 1);
+		}
+		return fileName;
 	}
 }

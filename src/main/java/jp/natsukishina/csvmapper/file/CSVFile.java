@@ -3,7 +3,7 @@ package jp.natsukishina.csvmapper.file;
 import java.io.File;
 import java.net.URI;
 
-import jp.natsukishina.csvmapper.CSVConverter;
+import jp.natsukishina.csvmapper.CSVMapper;
 import jp.natsukishina.csvmapper.CSVException;
 
 /**
@@ -77,7 +77,7 @@ public class CSVFile extends File {
 	}
 
 	private void validate() {
-		if (!CSVConverter.isCSVFile(this)) {
+		if (!CSVMapper.isCSVFile(this)) {
 			throw new CSVException(getName() + " is not csv File!");
 		}
 	}

@@ -23,7 +23,7 @@ dependencies {
 // settings for maven
 group = 'jp.natsukishina.csvmapper'
 archivesBaseName = 'csv-mapper'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0'
 
 task javadocJar(type: Jar, dependsOn:javadoc) {
 	classifier = 'javadoc'
