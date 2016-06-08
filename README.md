@@ -35,3 +35,14 @@ dependencies {
 
 * CSVMappableの仕様の見直し
   (Annotationsで列番号を指定できるようにする？)
+
+## JavaDoc
+
+[Ver 1.0.0](http://417-72ki.github.io/CSVMapper/javadoc/1.0.0/)
+
+## ライセンス
+
+Copyright &copy; 2016 417.72KI
+Licensed under the [MIT License][mit].
+
+[MIT]: http://www.opensource.org/licenses/mit-license.php
