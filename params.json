@@ -1,0 +1,6 @@
+{
+  "name": "Csvmapper",
+  "tagline": "",
+  "body": "# CSVMapper\r\n\r\n##概要\r\n\r\nCSVMapperはCSVファイルをJavaオブジェクトとして扱えるようにマッピングするライブラリです。\r\n\r\n##機能\r\n\r\n* CSVファイルの取り込み\r\n* CSVファイルへの出力\r\n\r\n## 更新履歴\r\n\r\n2016/06/08 Ver 1.0.0 公開\r\n\r\n## 使い方\r\n\r\n### Gradle\r\n\r\n* build.gradleに下記のブロックを追加\r\n```maven\r\nrepositories {\r\n    maven {\r\n        url 'https://github.com/417-72KI/CSVMapper/raw/master/repos'\r\n    }\r\n}\r\n```\r\n```maven\r\ndependencies {\r\n    compile 'jp.natsukishina.csvmapper:csv-mapper:1.0.0'\r\n}\r\n```\r\n\r\n## TODO\r\n\r\n* CSVMappableの仕様の見直し\r\n  (Annotationsで列番号を指定できるようにする？)\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
