@@ -11,11 +11,7 @@ CSVMapperはCSVファイルをJavaオブジェクトとして扱えるように�
 
 ## 更新履歴
 
-### 2016/06/10 Ver 1.0.1 公開
-
-* CSVMappable実装クラスのデフォルトコンストラクターをprivateでも使用できるように修正
-
-### 2016/06/08 Ver 1.0.0 公開
+### 2016/06/10 Ver 1.0.0 公開
 
 ## 使い方
 
@@ -31,7 +27,7 @@ repositories {
 ```
 ```maven
 dependencies {
-    compile 'jp.natsukishina.csvmapper:csv-mapper:1.0.1'
+    compile 'jp.natsukishina:csv-mapper:1.0.0'
 }
 ```
 
@@ -41,8 +37,6 @@ dependencies {
   (Annotationsで列番号を指定できるようにする？)
 
 ## JavaDoc
-
-[Ver 1.0.1](http://417-72ki.github.io/CSVMapper/javadoc/1.0.1/)
 
 [Ver 1.0.0](http://417-72ki.github.io/CSVMapper/javadoc/1.0.0/)
 

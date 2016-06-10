@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-  <groupId>jp.natsukishina.csvmapper</groupId>
+  <groupId>jp.natsukishina</groupId>
   <artifactId>csv-mapper</artifactId>
   <versioning>
-    <release>1.0.1</release>
+    <release>1.0.0</release>
     <versions>
-      <version>0.0.1-SNAPSHOT</version>
       <version>1.0.0</version>
-      <version>1.0.1</version>
     </versions>
-    <lastUpdated>20160610024040</lastUpdated>
+    <lastUpdated>20160610025735</lastUpdated>
   </versioning>
 </metadata>
