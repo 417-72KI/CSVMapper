@@ -23,8 +23,7 @@ dependencies {
 // settings for maven
 group = 'jp.natsukishina.csvmapper'
 archivesBaseName = 'csv-mapper'
-version = '2.0.0-SNAPSHOT'
-
+version = '1.0.1'
 jar {
     manifest {
         attributes("Implementation-Title": "CSVMapper",

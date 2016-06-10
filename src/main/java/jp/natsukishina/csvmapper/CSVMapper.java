@@ -11,6 +11,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -154,7 +156,9 @@ public abstract class CSVMapper {
 			List<E> convertedList = new ArrayList<>();
 			for (LinkedList<String> list : buildList) {
 				try {
-					E element = clazz.newInstance();
+					Constructor<E> constructor = clazz.getDeclaredConstructor();
+					constructor.setAccessible(true);
+					E element = constructor.newInstance();
 					element.importFromCSV(list);
 					convertedList.add(element);
 				} catch (RuntimeException e) {
@@ -163,7 +167,7 @@ public abstract class CSVMapper {
 				}
 			}
 			return convertedList;
-		} catch (InstantiationException e) {
+		} catch (InstantiationException | InvocationTargetException | NoSuchMethodException e) {
 			throw new CSVException("Class<" + clazz.getName() + "> must have a default Constructor", e);
 		} catch (IllegalAccessException | IOException e) {
 			throw new CSVException(e);

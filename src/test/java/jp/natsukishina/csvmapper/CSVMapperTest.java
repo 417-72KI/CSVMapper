@@ -15,7 +15,7 @@ import org.junit.Test;
 
 import jp.natsukishina.csvmapper.file.CSVFile;
 
-public class CSVConverterTest {
+public class CSVMapperTest {
 
 	private static final String RESOURCE_DIR = "src/test/resources";
 	private static final String RESOURCE_CSV_FILE = "test.csv";
@@ -208,6 +208,10 @@ public class CSVConverterTest {
 		private String col2;
 		private String col3;
 		private String col4;
+
+		private TestData() {
+			System.out.println("init TestData");
+		}
 
 		@Override
 		public boolean includeLines() {
