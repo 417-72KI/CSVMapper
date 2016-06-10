@@ -17,19 +17,40 @@ CSVMapperはCSVファイルをJavaオブジェクトとして扱えるように�
 
 ### Gradle
 
-* build.gradleに下記のブロックを追加
-```maven
+* repositoriesブロック内に下記を追加
+```groovy
 repositories {
     maven {
         url 'https://github.com/417-72KI/CSVMapper/raw/master/repos'
     }
 }
 ```
-```maven
+* dependenciesブロック内に下記を追加
+```groovy
 dependencies {
     compile 'jp.natsukishina:csv-mapper:1.0.0'
 }
 ```
+
+### Maven
+
+* repositoriesブロック内に下記を追加
+
+```xml
+<repository>
+	<id>CSVMapper</id>
+	<url>https://github.com/417-72KI/CSVMapper/raw/master/repos/</url>
+</repository>
+```
+* dependenciesブロック内に下記を追加
+```xml
+<dependency>
+	<groupId>jp.natsukishina</groupId>
+	<artifactId>csv-mapper</artifactId>
+	<version>1.0.0</version>
+</dependency>
+```
+
 
 ## TODO
 
