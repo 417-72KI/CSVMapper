@@ -18,8 +18,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.LoggerFactory;
 
 import jp.natsukishina.csvmapper.CSVMappable.Column;
 import jp.natsukishina.csvmapper.file.CSVFile;
@@ -202,18 +204,23 @@ public abstract class CSVMapper {
 					constructor.setAccessible(true);
 					E element = constructor.newInstance();
 					Class<?> cls = element.getClass();
-					Arrays.stream(cls.getDeclaredFields())
-							.filter(field -> field.getDeclaredAnnotation(Column.class) != null).forEach(field -> {
-								try {
-									field.setAccessible(true);
-									Column column = field.getDeclaredAnnotation(Column.class);
-									String value = list.get(column.value());
-									field.set(element, value);
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
-							});
-
+					List<Field> columnList = Arrays.stream(cls.getDeclaredFields())
+							.filter(field -> field.getDeclaredAnnotation(Column.class) != null)
+							.collect(Collectors.toList());
+					if (list.size() < columnList.size()) {
+						LoggerFactory.getLogger(CSVMapper.class).error("invalid row: " + list);
+						continue;
+					}
+					columnList.forEach(field -> {
+						try {
+							field.setAccessible(true);
+							Column column = field.getDeclaredAnnotation(Column.class);
+							String value = list.get(column.value());
+							field.set(element, value);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					});
 					convertedList.add(element);
 				} catch (RuntimeException e) {
 					System.out.println("skip row: " + list);
