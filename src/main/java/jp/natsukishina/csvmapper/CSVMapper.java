@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jp.natsukishina.csvmapper.CSVMappable.Column;
@@ -33,7 +34,7 @@ import jp.natsukishina.csvmapper.file.CSVFile;
  * @author 417.72KI
  */
 public abstract class CSVMapper {
-
+	private static final Logger LOG = LoggerFactory.getLogger(CSVMapper.class);
 	private static final String DEFAULT_CHAR_CODE = "UTF-8";
 
 	/**
@@ -51,12 +52,13 @@ public abstract class CSVMapper {
 	 *            出力するリスト
 	 * @param charCode
 	 *            出力文字コード
+	 * @return ファイル出力が完了したらtrue, listが空の場合falseを返す
 	 * @throws CSVException
 	 *             CSV出力時のエラー
 	 */
-	public static void output(CSVFile file, List<? extends CSVMappable> list, String charCode) throws CSVException {
+	public static boolean output(CSVFile file, List<? extends CSVMappable> list, String charCode) throws CSVException {
 		if (list == null || list.isEmpty()) {
-			return;
+			return false;
 		}
 
 		try {
@@ -107,7 +109,8 @@ public abstract class CSVMapper {
 				});
 				pw.println(StringUtils.join(strs, ","));
 			}
-			System.out.println("output to " + file.getAbsolutePath());
+			LOG.info("output to " + file.getAbsolutePath());
+			return true;
 		} catch (UnsupportedEncodingException | FileNotFoundException e) {
 			throw new CSVException(e);
 		}
@@ -122,11 +125,12 @@ public abstract class CSVMapper {
 	 *            出力先ファイル
 	 * @param list
 	 *            出力するリスト
+	 * @return ファイル出力が完了したらtrue, listが空の場合falseを返す
 	 * @throws CSVException
 	 *             CSV出力時のエラー
 	 */
-	public static void output(CSVFile file, List<? extends CSVMappable> list) throws CSVException {
-		output(file, list, inputCharCode == null ? DEFAULT_CHAR_CODE : inputCharCode);
+	public static boolean output(CSVFile file, List<? extends CSVMappable> list) throws CSVException {
+		return output(file, list, inputCharCode == null ? DEFAULT_CHAR_CODE : inputCharCode);
 	}
 
 	/**
@@ -139,12 +143,13 @@ public abstract class CSVMapper {
 	 *            出力するリスト
 	 * @param charCode
 	 *            出力文字コード
+	 * @return ファイル出力が完了したらtrue, listが空の場合falseを返す
 	 * @throws CSVException
 	 *             CSV出力時のエラー
 	 */
-	public static void output(String filePath, List<? extends CSVMappable> list, String charCode) throws CSVException {
+	public static boolean output(String filePath, List<? extends CSVMappable> list, String charCode) throws CSVException {
 		CSVFile file = new CSVFile(filePath);
-		output(file, list, charCode);
+		return output(file, list, charCode);
 	}
 
 	/**
@@ -156,11 +161,12 @@ public abstract class CSVMapper {
 	 *            出力先ファイルパス(絶対パス)
 	 * @param list
 	 *            出力するリスト
+	 * @return ファイル出力が完了したらtrue, listが空の場合falseを返す
 	 * @throws CSVException
 	 *             CSV出力時のエラー
 	 */
-	public static void output(String filePath, List<? extends CSVMappable> list) throws CSVException {
-		output(filePath, list, inputCharCode == null ? DEFAULT_CHAR_CODE : inputCharCode);
+	public static boolean output(String filePath, List<? extends CSVMappable> list) throws CSVException {
+		return output(filePath, list, inputCharCode == null ? DEFAULT_CHAR_CODE : inputCharCode);
 	}
 
 	/**
@@ -208,7 +214,7 @@ public abstract class CSVMapper {
 							.filter(field -> field.getDeclaredAnnotation(Column.class) != null)
 							.collect(Collectors.toList());
 					if (list.size() < columnList.size()) {
-						LoggerFactory.getLogger(CSVMapper.class).error("invalid row: " + list);
+						LOG.error("invalid row: " + list);
 						continue;
 					}
 					columnList.forEach(field -> {
