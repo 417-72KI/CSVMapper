@@ -204,9 +204,13 @@ public class CSVMapperTest {
 	}
 
 	public static class TestData implements CSVMappable {
+		@Column(0)
 		private String col1;
+		@Column(1)
 		private String col2;
+		@Column(2)
 		private String col3;
+		@Column(3)
 		private String col4;
 
 		private TestData() {
@@ -217,19 +221,5 @@ public class CSVMapperTest {
 		public boolean includeLines() {
 			return false;
 		}
-
-		@Override
-		public String[] array4exportCSV() {
-			return new String[] { col1, col2, col3, col4 };
-		}
-
-		@Override
-		public void importFromCSV(List<String> list) {
-			col1 = list.get(0);
-			col2 = list.get(1);
-			col3 = list.get(2);
-			col4 = list.get(3);
-		}
-
 	}
 }

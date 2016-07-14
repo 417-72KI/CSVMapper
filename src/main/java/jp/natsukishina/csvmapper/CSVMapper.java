@@ -12,11 +12,16 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
+import jp.natsukishina.csvmapper.CSVMappable.Column;
 import jp.natsukishina.csvmapper.file.CSVFile;
 
 /**
@@ -38,10 +43,14 @@ public abstract class CSVMapper {
 	 * リスト内の要素を1レコードとしてCSVファイルに出力する<br>
 	 * 出力時の文字コードはUTF-8
 	 *
-	 * @param file 出力先ファイル
-	 * @param list 出力するリスト
-	 * @param charCode 出力文字コード
-	 * @throws CSVException CSV出力時のエラー
+	 * @param file
+	 *            出力先ファイル
+	 * @param list
+	 *            出力するリスト
+	 * @param charCode
+	 *            出力文字コード
+	 * @throws CSVException
+	 *             CSV出力時のエラー
 	 */
 	public static void output(CSVFile file, List<? extends CSVMappable> list, String charCode) throws CSVException {
 		if (list == null || list.isEmpty()) {
@@ -49,7 +58,7 @@ public abstract class CSVMapper {
 		}
 
 		try {
-			//親フォルダが無い場合はフォルダを作成(再帰的に)
+			// 親フォルダが無い場合はフォルダを作成(再帰的に)
 			File parent = file.getParentFile();
 			if (!parent.exists()) {
 				parent.mkdirs();
@@ -62,21 +71,39 @@ public abstract class CSVMapper {
 		try (PrintWriter pw = new PrintWriter(
 				new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), charCode)))) {
 			for (CSVMappable c : list) {
-				for (int i = 0; i < c.array4exportCSV().length; i++) {
-					String str = c.array4exportCSV()[i];
-					str = str.replace("\"", "\"\"");
-					if (c.includeLines()) {
-						pw.print("\"");
+				Class<? extends CSVMappable> cls = c.getClass();
+				Field[] columns = Arrays.stream(cls.getDeclaredFields())
+						.filter(field -> field.getDeclaredAnnotation(Column.class) != null)
+						.toArray(Field[]::new);
+				String[] strs = new String[columns.length];
+				Arrays.stream(columns).forEach(field -> {
+					try {
+						field.setAccessible(true);
+						Column column = field.getDeclaredAnnotation(Column.class);
+						Object obj;
+						obj = field.get(c);
+						String str;
+						if (obj == null) {
+							str = "";
+						} else {
+							str = obj.toString();
+						}
+						str = str.replace("\"", "\"\"");
+
+						StringBuffer sb = new StringBuffer();
+						if (c.includeLines()) {
+							sb.append("\"");
+						}
+						sb.append(str);
+						if (c.includeLines()) {
+							sb.append("\"");
+						}
+						strs[column.value()] = sb.toString();
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
-					pw.print(str);
-					if (c.includeLines()) {
-						pw.print("\"");
-					}
-					if (i < c.array4exportCSV().length - 1) {
-						pw.print(",");
-					}
-				}
-				pw.println();
+				});
+				pw.println(StringUtils.join(strs, ","));
 			}
 			System.out.println("output to " + file.getAbsolutePath());
 		} catch (UnsupportedEncodingException | FileNotFoundException e) {
@@ -89,9 +116,12 @@ public abstract class CSVMapper {
 	 * 出力時の文字コードは最後に読み込んだCSVファイルの文字コード<br>
 	 * (※CSVファイルが一度も読み込まれていない場合はUTF-8)
 	 *
-	 * @param file 出力先ファイル
-	 * @param list 出力するリスト
-	 * @throws CSVException CSV出力時のエラー
+	 * @param file
+	 *            出力先ファイル
+	 * @param list
+	 *            出力するリスト
+	 * @throws CSVException
+	 *             CSV出力時のエラー
 	 */
 	public static void output(CSVFile file, List<? extends CSVMappable> list) throws CSVException {
 		output(file, list, inputCharCode == null ? DEFAULT_CHAR_CODE : inputCharCode);
@@ -101,13 +131,16 @@ public abstract class CSVMapper {
 	 * リスト内の要素を1レコードとしてCSVファイルに出力する<br>
 	 * 出力時の文字コードはUTF-8
 	 *
-	 * @param filePath 出力先ファイルパス(絶対パス)
-	 * @param list 出力するリスト
-	 * @param charCode 出力文字コード
-	 * @throws CSVException CSV出力時のエラー
+	 * @param filePath
+	 *            出力先ファイルパス(絶対パス)
+	 * @param list
+	 *            出力するリスト
+	 * @param charCode
+	 *            出力文字コード
+	 * @throws CSVException
+	 *             CSV出力時のエラー
 	 */
-	public static void output(String filePath, List<? extends CSVMappable> list, String charCode)
-			throws CSVException {
+	public static void output(String filePath, List<? extends CSVMappable> list, String charCode) throws CSVException {
 		CSVFile file = new CSVFile(filePath);
 		output(file, list, charCode);
 	}
@@ -117,9 +150,12 @@ public abstract class CSVMapper {
 	 * 出力時の文字コードは最後に読み込んだCSVファイルの文字コード<br>
 	 * (※CSVファイルが一度も読み込まれていない場合はUTF-8)
 	 *
-	 * @param filePath 出力先ファイルパス(絶対パス)
-	 * @param list 出力するリスト
-	 * @throws CSVException CSV出力時のエラー
+	 * @param filePath
+	 *            出力先ファイルパス(絶対パス)
+	 * @param list
+	 *            出力するリスト
+	 * @throws CSVException
+	 *             CSV出力時のエラー
 	 */
 	public static void output(String filePath, List<? extends CSVMappable> list) throws CSVException {
 		output(filePath, list, inputCharCode == null ? DEFAULT_CHAR_CODE : inputCharCode);
@@ -127,13 +163,16 @@ public abstract class CSVMapper {
 
 	/**
 	 * CSVファイルを解析し、指定されたクラスのリストに変換する<br>
-	 * 変換には {@link CSVMappable#importFromCSV(List)}を使用する
 	 *
-	 * @param <E> CSVConvertableを実装したクラス
-	 * @param filePath CSVファイルのパス
-	 * @param clazz 変換するクラス
+	 * @param <E>
+	 *            CSVConvertableを実装したクラス
+	 * @param filePath
+	 *            CSVファイルのパス
+	 * @param clazz
+	 *            変換するクラス
 	 * @return 指定クラスのインスタンスリスト
-	 * @throws CSVException CSV読み込み時のエラー
+	 * @throws CSVException
+	 *             CSV読み込み時のエラー
 	 */
 	public static <E extends CSVMappable> List<E> convertFromCSVFile(String filePath, Class<E> clazz)
 			throws CSVException {
@@ -142,13 +181,16 @@ public abstract class CSVMapper {
 
 	/**
 	 * CSVファイルを解析し、指定されたクラスのリストに変換する<br>
-	 * 変換には {@link CSVMappable#importFromCSV(List)}を使用する
 	 *
-	 * @param <E> CSVConvertableを実装したクラス
-	 * @param file CSVファイル
-	 * @param clazz 変換するクラス
+	 * @param <E>
+	 *            CSVConvertableを実装したクラス
+	 * @param file
+	 *            CSVファイル
+	 * @param clazz
+	 *            変換するクラス
 	 * @return 指定クラスのインスタンスリスト
-	 * @throws CSVException CSV読み込み時のエラー
+	 * @throws CSVException
+	 *             CSV読み込み時のエラー
 	 */
 	public static <E extends CSVMappable> List<E> convertFromCSVFile(CSVFile file, Class<E> clazz) throws CSVException {
 		try {
@@ -159,7 +201,19 @@ public abstract class CSVMapper {
 					Constructor<E> constructor = clazz.getDeclaredConstructor();
 					constructor.setAccessible(true);
 					E element = constructor.newInstance();
-					element.importFromCSV(list);
+					Class<?> cls = element.getClass();
+					Arrays.stream(cls.getDeclaredFields())
+							.filter(field -> field.getDeclaredAnnotation(Column.class) != null).forEach(field -> {
+								try {
+									field.setAccessible(true);
+									Column column = field.getDeclaredAnnotation(Column.class);
+									String value = list.get(column.value());
+									field.set(element, value);
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							});
+
 					convertedList.add(element);
 				} catch (RuntimeException e) {
 					System.out.println("skip row: " + list);
@@ -177,9 +231,11 @@ public abstract class CSVMapper {
 	/**
 	 * CSVファイルを解析してフィールド配列のリストを生成する
 	 *
-	 * @param file CSVファイル
+	 * @param file
+	 *            CSVファイル
 	 * @return 生成されたフィールド配列のリスト
-	 * @throws IOException ファイルの入出力に関するエラー
+	 * @throws IOException
+	 *             ファイルの入出力に関するエラー
 	 */
 	private static List<LinkedList<String>> build(CSVFile file) throws IOException {
 		inputCharCode = FileCharDetecter.detect(file);
@@ -204,9 +260,11 @@ public abstract class CSVMapper {
 	/**
 	 * BufferedReaderから1レコード分のテキストを取り出す。
 	 *
-	 * @param reader 行データを取り出すBufferedReader。
+	 * @param reader
+	 *            行データを取り出すBufferedReader。
 	 * @return 1レコード分のテキスト。
-	 * @throws IOException 入出力エラー
+	 * @throws IOException
+	 *             入出力エラー
 	 */
 	private static String buildRecord(BufferedReader reader) throws IOException {
 		String result = reader.readLine();
@@ -244,8 +302,10 @@ public abstract class CSVMapper {
 	/**
 	 * 1レコード分のテキストを分割してフィールドの配列にする。
 	 *
-	 * @param src 1レコード分のテキストデータ。
-	 * @param dest フィールドの配列の出力先。
+	 * @param src
+	 *            1レコード分のテキストデータ。
+	 * @param dest
+	 *            フィールドの配列の出力先。
 	 */
 	private static void splitRecord(String src, LinkedList<String> dest) {
 		String[] columns = src.split(",", -1);
@@ -288,8 +348,8 @@ public abstract class CSVMapper {
 	}
 
 	/**
-	 * 最後に読み込んだCSVファイルの文字コードを返す。
-	 * CSVファイルが一度も読み込まれていない場合はnullを返す。
+	 * 最後に読み込んだCSVファイルの文字コードを返す。 CSVファイルが一度も読み込まれていない場合はnullを返す。
+	 *
 	 * @return 最後に読み込んだCSVファイルの文字コード
 	 */
 	public static String getInputCharCode() {
@@ -299,7 +359,9 @@ public abstract class CSVMapper {
 	/**
 	 * ファイルがCSVファイルかどうか判定する。<br>
 	 * 判定基準は拡張子が'.csv'となっていること
-	 * @param file ファイル
+	 *
+	 * @param file
+	 *            ファイル
 	 * @return CSVファイルならtrue
 	 */
 	public static boolean isCSVFile(File file) {
@@ -320,7 +382,9 @@ public abstract class CSVMapper {
 
 	/**
 	 * ファイル名から拡張子を返します。
-	 * @param fileName ファイル名
+	 *
+	 * @param fileName
+	 *            ファイル名
 	 * @return ファイルの拡張子
 	 */
 	private static String getSuffix(String fileName) {

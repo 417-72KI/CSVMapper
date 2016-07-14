@@ -7,6 +7,8 @@ package jp.natsukishina.csvmapper;
  */
 public class CSVException extends RuntimeException {
 
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * {@inheritDoc}
 	 */
