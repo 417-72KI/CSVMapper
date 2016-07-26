@@ -189,7 +189,8 @@ public abstract class CSVMapper {
 
 	/**
 	 * CSVファイルを解析し、指定されたクラスのリストに変換する<br>
-	 *
+	 * その際、#で始まる行はコメント行としてスキップする
+	 * 
 	 * @param <E>
 	 *            CSVConvertableを実装したクラス
 	 * @param file
