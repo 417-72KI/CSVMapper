@@ -242,7 +242,8 @@ public abstract class CSVMapper {
 	}
 
 	/**
-	 * CSVファイルを解析してフィールド配列のリストを生成する
+	 * CSVファイルを解析してフィールド配列のリストを生成する<br>
+	 * その際、#で始まる行はコメント行としてスキップする
 	 *
 	 * @param file
 	 *            CSVファイル
@@ -260,6 +261,9 @@ public abstract class CSVMapper {
 			List<LinkedList<String>> csv = new ArrayList<>();
 			String recordStr;
 			while ((recordStr = buildRecord(reader)) != null) {
+				if(recordStr.startsWith("#")) {
+					continue;
+				}
 				LinkedList<String> record = new LinkedList<>();
 				splitRecord(recordStr, record);
 				if (!record.isEmpty()) {
